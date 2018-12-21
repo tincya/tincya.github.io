@@ -1,0 +1,194 @@
+<html lang="vi">
+<head>
+	<title>Nghịch Code - Trang Chủ</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="./img/favicon.jpg">
+  <link rel="icon" href="./img/favicon.jpg">
+  <!--boostrap-->
+  <!--host-->
+  <link rel="stylesheet" href="./libs/css/bootstrap.min.css">
+  <script language="javascript" src="./libs/js/jquery-3.3.1.min.js"></script>
+  <script src="./libs/js/bootstrap.min.js"></script>
+  <script src="./database/database.js"></script>
+  <style type="text/css">
+  img.img-thumbnail{width: 300px;height: 160px;}
+  img[class*="wp-image"] {display: block;margin: auto;}
+  .footer-wrapper {background-color: #333;padding-top: 40px;padding-bottom: 20px;color: #f5f5f5;position: relative;}
+  .header-wrapper a {color: orangered;font-weight: bold;}
+  .header-wrapper a:focus, .header-wrapper a:hover {color: #ff9800;text-decoration: none;}
+  .nav-progress-bar {
+    height: 3px;width: 0%;
+    opacity: 0;visibility: hidden;
+    background: linear-gradient(to right, orange , red);
+    position:fixed;top: 0;left: 0;
+    z-index: 100;
+    transition: width 3s;
+  }
+  </style>
+  <script type="text/javascript">
+  function showProgressBar(per) {
+    if (per > 0) {
+      per=per+"%";
+      $(".nav-progress-bar").css({"opacity":1,"visibility":"visible","width":per});
+    } else {
+      $(".nav-progress-bar").attr({'style':''});
+    }
+  }
+  function loadContent(e){
+    showProgressBar(90);
+    var eUrl;
+    if ( (typeof e) === "string") {eUrl=e+".xml";}
+    else {eUrl=$(e).attr("href").replace("#","")+".xml";};
+    eUrl="./data/"+eUrl;
+    $.ajax({
+      url:eUrl,
+      error:function(xhr){
+        console.log("fail");console.log(xhr.statusText);
+        showProgressBar(0);
+      },
+      success:function(result){
+        console.log("success");console.log(result);
+        showProgressBar(100);
+        $("#main-content").empty();
+        var tr=result.getElementsByTagName("nc-content")[0].textContent;
+        $("#main-content").append(tr);
+        setTimeout(function(){showProgressBar(0)}, 300);
+      }
+    });
+  }
+  $(document).ready(function(){
+    if (window.location.hash != "") {
+      loadContent(window.location.hash.replace("#",""));
+      for(var i=38; i<db.length; i++){
+        var sidebar = '<h5>['+db[i][2].split(" ")[0]
+        +'] : <a href="#'+url
+        +'" onclick="loadContent(this)">'
+        +db[i][0]+'</a></h5>';
+        $("#sidebar").append(sidebar);
+      }
+      return ;
+    };
+    showProgressBar(90);
+    for(var i=1; i<db.length; i++){
+      var img ='';
+      if (db[i][6] =='')
+       {img = '<img src="./img/default-thumb-'+Math.floor(Math.random()*6+1)+'.jpg" class="img-thumbnail" />';}
+      else {img = '<img src="'+db[i][6]+'" class="img-thumbnail" />';}
+      var details='<h4><small><a href="#">'+db[i][1]+'</a></small>'
+        +' <small style="position: absolute;right: 40px;">'+db[i][2].split(" ")[0]+'</small></h4>';
+      var url=db[i][4]+'/'+db[i][5];
+      var title = '<h3><a href="#'+url+'" onclick=loadContent(this)>'+db[i][0]+'</a></h3>';
+      var content = '<p>'+db[i][7]+'</p>'
+      var post = '';
+      if (i%3==1) {post = '<div class="col-sm-4" style="clear:left">'}
+      else {post = '<div class="col-sm-4">'};
+      post = post
+      +img+title+details+content
+      +'</div>';
+      var sidebar = '<h5>['+db[i][2].split(" ")[0]
+        +'] : <a href="#'+url
+        +'" onclick="loadContent(this)">'
+        +db[i][0]+'</a></h5>';
+      if (i%3==0) {post=post+'<br/>'};
+      if (i<10) $("#posts").append(post);
+      else if (i<19) $("#products").append(post);
+      else if (i<28) $("#samples").append(post);
+      else if (i<37) $("#tuts").append(post);
+      else $("#sidebar").append(sidebar);
+    }
+    showProgressBar(100);
+    setTimeout(function(){showProgressBar(0)}, 300);
+  });
+  </script>
+</head>
+<body>
+<div class="nav-progress-bar"></div>
+<header class="container-fluid header-wrapper">
+  <div class="col-sm-6">
+    <h1><a href="index.html">Nghịch Code</a></h1>
+    <p>Code một cách tốt hơn</p>
+    <div class="empty-block"></div>
+  </div>
+  <div class="col-sm-6" style="align:right;">ZZZ
+  </div>
+</header>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNav">
+                <span class="glyphicon glyphicon-menu-hamburger" id="navBut"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNav">
+		    <ul class="nav navbar-nav">
+		        <li class=""><a href="index.html">Trang chủ</a></li>
+		        <li class=""><a href="posts.html">Bài Viết</a></li>
+            <li class=""><a href="products.html">Sản Phẩm</a></li>
+            <li class=""><a href="samples.html">Samples</a></li>
+            <li class=""><a href="tuts.html">Hướng dẫn</a></li>
+		        <li class=""><a href="weather.html">Thời tiết</a></li>
+		    </ul>
+		    <ul class="nav navbar-nav navbar-right">
+		        <li class="nlink">
+		            <a id="nlink" href="logout.html">
+		                <span class="glyphicon glyphicon-log-out"></span>  Rời Trang</a>
+		        </li>
+		        <li class="nlink">
+		            <a id="nlink" href="subscribe.html">
+		                <span class="glyphicon glyphicon-log-in"></span>  Đăng Ký</a>
+		        </li>
+		    </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="site-content">
+  <div id="main-content" class="col-sm-10">
+
+    <div class="panel panel-primary posts">
+      <div class="panel-heading">Bài viết mới</div>
+      <div id="posts" class="panel-body">
+
+      </div>
+    </div>
+
+    <div class="panel panel-danger products">
+      <div class="panel-heading">Các sản phẩm</div>
+      <div id="products" class="panel-body">
+
+      </div>
+    </div>
+
+    <div class="panel panel-danger samples">
+      <div class="panel-heading">Các ví dụ mẫu</div>
+      <div id="samples" class="panel-body">
+
+      </div>
+    </div>
+
+    <div class="panel panel-danger tuts">
+      <div class="panel-heading">Hướng dẫn</div>
+      <div id="tuts" class="panel-body">
+
+      </div>
+    </div>
+
+  </div>
+  <div class="col-sm-2 sidebar">
+    <div class="panel panel-danger sidebar">
+      <div class="panel-heading"><h3>Thông tin mới cập nhật</h3></div>
+      <div id="sidebar" class="panel-body">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="container-fluid footer-wrapper" style="clear:left;">
+    <p class="text-left">Copyright &copy; 2018 Nghich Code. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
