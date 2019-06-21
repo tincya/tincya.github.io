@@ -9,7 +9,7 @@
 <script>
 window.fbAsyncInit = function() {
 	FB.init({
-	appId:'418441828732334',cookie:true,xfbml:true,version:'3.3'
+	appId:'418441828732334',cookie:true,xfbml:true,version:'v3.3'
 	});
 	FB.AppEvents.logPageView();   
 };
@@ -21,6 +21,7 @@ window.fbAsyncInit = function() {
 	js.src = "https://connect.facebook.net/en_US/sdk.js";
 	fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
+FB.AppEvents.logPageView();
 </script>
 
  <link rel="icon" href="./shortcut.png">
