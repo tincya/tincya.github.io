@@ -89,7 +89,7 @@
 
 <script>
   const hash = window.location.hash;
-  const url = hash.replace('_', '.').replace('#', '');
+  const url = hash.replaceAll('_', '.').replace('#', '');
   const href = window.location.protocol + '//' + url;
   var c = 5;
   document.getElementById('time_str').innerText = 'Wait ' + c + ' seconds!';
