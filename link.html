@@ -90,12 +90,17 @@
 <script>
   const hash = window.location.hash;
   const url = hash.replaceAll('_', '.').replace('#', '');
-  const href = window.location.protocol + '//' + url;
-  var c = 5;
+  const href = 'http:' + '//' + url;
+  var c = 3;
+  var skip = false;
   document.getElementById('time_str').innerText = 'Wait ' + c + ' seconds!';
   document.getElementById('site').innerHTML = 'Redirect to: <a href="' + href + '">' + url + '</a>.';
   if (url) {
     const time_id = setInterval(function () {
+      if (skip) {
+        clearInterval(time_id);
+        return;
+      }
       if (--c <= 0) {
         window.location.href = href;
         clearInterval(time_id);
